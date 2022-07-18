@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "precucumber":"rimraf reports && mkdir reports && echo {} > reports/report.json",
+    "precucumber": "rimraf reports && mkdir reports && echo {} > reports/report.json",
     "transpile": "rimraf dist && babel --extensions .ts --out-dir dist src",
     "cucumber-compile": "yarn transpile && cucumber-js",
     "cucumber": "yarn cucumber-compile",
-    "postcucumber":"ts-node ./src/reporter/cucumber-report.ts"
+    "postcucumber": "ts-node ./src/reporter/cucumber-report.ts"
   },
   "author": "",
   "license": "ISC",

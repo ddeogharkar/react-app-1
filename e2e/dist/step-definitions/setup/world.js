@@ -53,6 +53,8 @@ var ScenarioWorld = /*#__PURE__*/function (_World) {
 
     _this = _super.call(this, options);
 
+    _defineProperty(_assertThisInitialized(_this), "globalConfig", void 0);
+
     _defineProperty(_assertThisInitialized(_this), "screen", void 0);
 
     _defineProperty(_assertThisInitialized(_this), "newBrowser", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -67,6 +69,7 @@ var ScenarioWorld = /*#__PURE__*/function (_World) {
               browserType = _playwright.default[automationBrowser];
               _context.next = 5;
               return browserType.launch({
+                devtools: process.env.DEVTOOLS !== 'false',
                 headless: process.env.HEADLESS !== 'false',
                 args: ['--disable-web-security', '--disable-features=IsolateOrigins,site-per-process']
               });
@@ -83,6 +86,7 @@ var ScenarioWorld = /*#__PURE__*/function (_World) {
       }, _callee);
     })));
 
+    _this.globalConfig = options.parameters;
     return _this;
   }
 

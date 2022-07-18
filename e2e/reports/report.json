@@ -4,70 +4,219 @@
     "elements": [
       {
         "description": "",
-        "id": "as-a-user-i-expect-to-be-able-to-navigate-to-the-home-page;as-a-user-i-expect-to-be-able-to-see-contacts",
+        "id": "as-a-user-i-can-interact-with-iframes;as-a-user-i-can-interact-and-assert-on-iframes",
         "keyword": "Scenario",
-        "line": 3,
-        "name": "As a user I expect to be able to see contacts",
+        "line": 6,
+        "name": "As a user I can interact and assert on iframes",
         "steps": [
           {
             "keyword": "Before",
             "hidden": true,
             "result": {
-              "status": "failed",
-              "duration": 10872159900,
-              "error_message": "Error: function timed out, ensure the promise resolves within 5000 milliseconds\n    at Timeout.<anonymous> (C:\\Automation\\TestingTalksCucumberPlaywright\\react-app1\\e2e\\node_modules\\@cucumber\\cucumber\\src\\time.ts:53:14)\n    at listOnTimeout (node:internal/timers:557:17)\n    at processTimers (node:internal/timers:500:7)"
+              "status": "passed",
+              "duration": 8605308299
             }
           },
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 5,
+            "line": 7,
             "name": "I am on the \"home\" page",
             "match": {
-              "location": "src\\step-definitions\\navigation.ts:3"
+              "location": "src\\step-definitions\\navigation.ts:8"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 1403427100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "I click the \"playground\" button",
+            "match": {
+              "location": "src\\step-definitions\\click.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 270233800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I am directed to the \"playground\" page",
+            "match": {
+              "location": "src\\step-definitions\\navigation.ts:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11562800
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 6,
-            "name": "the \"contacts header\" should contain the text \"Contacts\"",
+            "line": 10,
+            "name": "I fill in the \"search\" input on the \"basic iframe\" iframe with \"Abraham Perry\"",
             "match": {
-              "location": "src\\step-definitions\\assertions\\verify-element-visibility.ts:6"
+              "location": "src\\step-definitions\\iframes.ts:8"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 1387427899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "the \"contact\" on the \"basic iframe\" iframe should be displayed",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:8"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 77005800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "the \"full name label\" on the \"basic iframe\" iframe should contain the text \"Name:\"",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:29"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 82993599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "the \"name\" on the \"basic iframe\" iframe should equal the text \"Abraham Perry\"",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:55"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 48872900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "the \"gender label\" on the \"basic iframe\" iframe should contain the text \"Gender:\"",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:29"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 44319099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "the \"gender\" on the \"basic iframe\" iframe should equal the text \"Male\"",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:55"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 41348399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "the \"address label\" on the \"basic iframe\" iframe should contain the text \"Address:\"",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:29"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 43343600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "the \"address\" on the \"basic iframe\" iframe should contain the text \"Ap #826-8849 Vulputate Street, Laramie\"",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:29"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 41096600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "the \"edit\" on the \"basic iframe\" iframe should be displayed",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:8"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 37061899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "the \"delete\" on the \"basic iframe\" iframe should be displayed",
+            "match": {
+              "location": "src\\step-definitions\\assertions\\verify-iframe.ts:8"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 38494399
             }
           },
           {
             "keyword": "After",
             "hidden": true,
             "result": {
-              "status": "failed",
-              "duration": 978499,
-              "error_message": "TypeError: Cannot read properties of undefined (reading 'page')\n    at ScenarioWorld.<anonymous> (C:\\Automation\\TestingTalksCucumberPlaywright\\react-app1\\e2e\\src\\step-definitions\\setup\\hooks.ts:29:27)\n    at Generator.next (<anonymous>)\n    at C:\\Automation\\TestingTalksCucumberPlaywright\\react-app1\\e2e\\src\\step-definitions\\setup\\hooks.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (C:\\Automation\\TestingTalksCucumberPlaywright\\react-app1\\e2e\\src\\step-definitions\\setup\\hooks.ts:4:12)\n    at ScenarioWorld.<anonymous> (C:\\Automation\\TestingTalksCucumberPlaywright\\react-app1\\e2e\\src\\step-definitions\\setup\\hooks.ts:28:12)"
+              "status": "passed",
+              "duration": 477936800
             }
           }
         ],
         "tags": [
           {
+            "name": "@dev",
+            "line": 3
+          },
+          {
             "name": "@smoke",
-            "line": 2
+            "line": 4
+          },
+          {
+            "name": "@regression",
+            "line": 5
           }
         ],
         "type": "scenario"
       }
     ],
-    "id": "as-a-user-i-expect-to-be-able-to-navigate-to-the-home-page",
+    "id": "as-a-user-i-can-interact-with-iframes",
     "line": 1,
     "keyword": "Feature",
-    "name": "As a user I expect to be able to navigate to the home page",
+    "name": "As a user I can interact with iframes",
     "tags": [],
-    "uri": "src\\features\\home-page.feature"
+    "uri": "src\\features\\playground\\iframes.feature"
   }
 ]
