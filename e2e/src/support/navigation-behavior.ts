@@ -12,7 +12,7 @@ export const navigateToPage = async (
   }=process.env
 
   const hostPath = hostsConfig[`${hostName}`]
-  console.log(`host path = ${hostPath}`)
+  //console.log(`host path = ${hostPath}`)
   const url =new URL(hostPath);
 
   //console.log(`url = ${url}`)
@@ -43,7 +43,7 @@ pageId:PageId,
 globalConfig:GlobalConfig
 ):boolean=>{
   const {pathname:currentPath} = new URL(page.url());
-  console.log("current path " , currentPath);
+  //console.log("current path " , currentPath);
   return pathMatchesPageId(currentPath, pageId,globalConfig)
 }
 
@@ -53,12 +53,12 @@ page:Page,
 globalConfig:GlobalConfig,
 ):PageId=>{
   const{pagesConfig}=globalConfig;
-  console.log("pagesConfig", pagesConfig)
+  //console.log("pagesConfig", pagesConfig)
   const pageConfigPageIds = Object.keys(pagesConfig)
-  console.log("pageConfigPageIds",pageConfigPageIds)
+  //console.log("pageConfigPageIds",pageConfigPageIds)
   const{pathname:currentPath} = new URL(page.url())
   const currentPageId = pageConfigPageIds.find(pageId=>pathMatchesPageId(currentPath,pageId,globalConfig));
-  console.log("currentPageId",currentPageId)
+  //console.log("currentPageId",currentPageId)
   if(!currentPageId){
     throw Error(
       `Failed to get page name from current route ${currentPath},\

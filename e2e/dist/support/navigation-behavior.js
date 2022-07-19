@@ -19,18 +19,18 @@ var navigateToPage = /*#__PURE__*/function () {
           case 0:
             pagesConfig = _ref.pagesConfig, hostsConfig = _ref.hostsConfig;
             _process$env$UI_AUTOM = process.env.UI_AUTOMATION_HOST, hostName = _process$env$UI_AUTOM === void 0 ? 'localhost' : _process$env$UI_AUTOM;
-            hostPath = hostsConfig["".concat(hostName)];
-            console.log("host path = ".concat(hostPath));
+            hostPath = hostsConfig["".concat(hostName)]; //console.log(`host path = ${hostPath}`)
+
             url = new URL(hostPath); //console.log(`url = ${url}`)
 
             pagesConfigItem = pagesConfig[pageId]; //console.log("pagesConfigItem" +pagesConfigItem)
 
             url.pathname = pagesConfigItem.route; //console.log(`url path = ${url.pathname}`)
 
-            _context.next = 9;
+            _context.next = 8;
             return page.goto(url.href);
 
-          case 9:
+          case 8:
           case "end":
             return _context.stop();
         }
@@ -54,27 +54,25 @@ var pathMatchesPageId = function pathMatchesPageId(path, pageId, _ref3) {
 
 var currentPathMatchesPageId = function currentPathMatchesPageId(page, pageId, globalConfig) {
   var _URL = new URL(page.url()),
-      currentPath = _URL.pathname;
+      currentPath = _URL.pathname; //console.log("current path " , currentPath);
 
-  console.log("current path ", currentPath);
+
   return pathMatchesPageId(currentPath, pageId, globalConfig);
 };
 
 exports.currentPathMatchesPageId = currentPathMatchesPageId;
 
 var getCurrentPageId = function getCurrentPageId(page, globalConfig) {
-  var pagesConfig = globalConfig.pagesConfig;
-  console.log("pagesConfig", pagesConfig);
-  var pageConfigPageIds = Object.keys(pagesConfig);
-  console.log("pageConfigPageIds", pageConfigPageIds);
+  var pagesConfig = globalConfig.pagesConfig; //console.log("pagesConfig", pagesConfig)
+
+  var pageConfigPageIds = Object.keys(pagesConfig); //console.log("pageConfigPageIds",pageConfigPageIds)
 
   var _URL2 = new URL(page.url()),
       currentPath = _URL2.pathname;
 
   var currentPageId = pageConfigPageIds.find(function (pageId) {
     return pathMatchesPageId(currentPath, pageId, globalConfig);
-  });
-  console.log("currentPageId", currentPageId);
+  }); //console.log("currentPageId",currentPageId)
 
   if (!currentPageId) {
     throw Error("Failed to get page name from current route ".concat(currentPath, ",    possible pages : ").concat(JSON.stringify(pagesConfig)));

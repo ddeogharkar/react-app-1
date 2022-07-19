@@ -11,14 +11,17 @@ console.log("hostsConfig" ,hostsConfig)
 const pagesConfig: PagesConfig = getJsonFromFile(env('PAGE_URLS_PATH'));
 console.log("pagesConfig", pagesConfig)
 const mappingFiles = fs.readdirSync(`${process.cwd()}${env('PAGE_ELEMENTS_PATH')}`)
-
+console.log("mappingFiles", mappingFiles)
 
 const pageElementMappings:PageElementMappings = mappingFiles.reduce((pageElementConfigAcc,file)=>{
+  console.log("pageElementConfigAcc", pageElementConfigAcc)
+  console.log("file", file)
   const key =file.replace('.json','')
   const elementMappings = getJsonFromFile(`${env('PAGE_ELEMENTS_PATH')}${file}`);
   return {...pageElementConfigAcc,[key]:elementMappings}
 },{})
 
+console.log("pageElementMappings", pageElementMappings)
 
 const worldParameters: GlobalConfig = {
   hostsConfig,

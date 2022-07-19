@@ -71,3 +71,13 @@ export const getValue = async(
   ):Promise<void>=>{
     await elementIframe.fill(elementIdentifier,inputValue) 
   }
+
+  export const inputValueOnPage = async(
+    pages:Array<Page>,
+    PageIndex:number,
+    elementIdentifier:ElementLocator,
+    inputValue:string
+  ):Promise<void>=>{
+    await pages[PageIndex].focus(elementIdentifier);
+    await pages[PageIndex].fill(elementIdentifier,inputValue);
+  }
