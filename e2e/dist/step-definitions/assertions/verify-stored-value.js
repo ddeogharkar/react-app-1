@@ -2,53 +2,40 @@
 
 var _cucumber = require("@cucumber/cucumber");
 
-var _htmlBehavior = require("../support/html-behavior");
+var _webElementHelper = require("../../support/web-element-helper");
 
-var _waitForBehavior = require("../support/wait-for-behavior");
-
-var _webElementHelper = require("../support/web-element-helper");
+var _waitForBehavior = require("../../support/wait-for-behavior");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-(0, _cucumber.When)(/^I click the "([^"]*)" (?:button|link|icon|element)$/, /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(elementKey) {
-    var page, globalConfig, elementIdentifier;
+(0, _cucumber.Then)(/^the "([^"]*)" should( not)? equal the "([^"]*)" stored in global variables$/, /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(elementKey, negate, variableKey) {
+    var page, globalConfig, globalVariables, elementIdentifier;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            page = this.screen.page, globalConfig = this.globalConfig;
-            console.log("I click the ".concat(elementKey, " (?:button|link|icon|element)"));
+            page = this.screen.page, globalConfig = this.globalConfig, globalVariables = this.globalVariables;
+            console.log("the ".concat(elementKey, " should ").concat(negate ? 'not ' : '', "equal the ").concat(globalVariables[variableKey], " stored in global variables"));
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             _context2.next = 5;
             return (0, _waitForBehavior.waitFor)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var result;
+              var elementText, variableValue;
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
                       _context.next = 2;
-                      return page.waitForSelector(elementIdentifier, {
-                        state: "visible"
-                      });
+                      return page.textContent(elementIdentifier);
 
                     case 2:
-                      result = _context.sent;
+                      elementText = _context.sent;
+                      variableValue = globalVariables[variableKey];
+                      return _context.abrupt("return", elementText === variableValue === !negate);
 
-                      if (!result) {
-                        _context.next = 6;
-                        break;
-                      }
-
-                      _context.next = 6;
-                      return (0, _htmlBehavior.clickElement)(page, elementIdentifier);
-
-                    case 6:
-                      return _context.abrupt("return", result);
-
-                    case 7:
+                    case 5:
                     case "end":
                       return _context.stop();
                   }
@@ -64,50 +51,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }, _callee2, this);
   }));
 
-  return function (_x, _x2) {
+  return function (_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }());
-(0, _cucumber.When)(/^I click the "([0-9]+th|[0-9]+st|[0-9]+nd|[0-9]+rd)" "([^"]*)" (?:button|link)$/, /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(elementPosition, elementKey) {
-    var _elementPosition$matc;
-
-    var page, globalConfig, elementIdentifier, pageIndex;
+(0, _cucumber.Then)(/^the "([^"]*)" should( not)? contain the "([^"]*)" stored in global variables$/, /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(elementKey, negate, variableKey) {
+    var page, globalConfig, globalVariables, elementIdentifier;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            page = this.screen.page, globalConfig = this.globalConfig;
-            console.log("I click ".concat(elementPosition, " ").concat(elementKey, " button|link"));
+            page = this.screen.page, globalConfig = this.globalConfig, globalVariables = this.globalVariables;
+            console.log("the ".concat(elementKey, " should ").concat(negate ? 'not ' : '', "contains the ").concat(globalVariables[variableKey], " stored in global variables"));
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
-            pageIndex = Number((_elementPosition$matc = elementPosition.match(/\d/g)) === null || _elementPosition$matc === void 0 ? void 0 : _elementPosition$matc.join('')) - 1;
-            _context4.next = 6;
+            _context4.next = 5;
             return (0, _waitForBehavior.waitFor)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-              var result;
+              var elementText, variableValues;
               return regeneratorRuntime.wrap(function _callee3$(_context3) {
                 while (1) {
                   switch (_context3.prev = _context3.next) {
                     case 0:
                       _context3.next = 2;
-                      return page.waitForSelector(elementIdentifier, {
-                        state: "visible"
-                      });
+                      return page.textContent(elementIdentifier);
 
                     case 2:
-                      result = _context3.sent;
+                      elementText = _context3.sent;
+                      variableValues = globalVariables[variableKey];
+                      return _context3.abrupt("return", (elementText === null || elementText === void 0 ? void 0 : elementText.includes(variableValues)) === !negate);
 
-                      if (!result) {
-                        _context3.next = 6;
-                        break;
-                      }
-
-                      _context3.next = 6;
-                      return (0, _htmlBehavior.clickElementAtIndex)(page, elementIdentifier, pageIndex);
-
-                    case 6:
-                      return _context3.abrupt("return", result);
-
-                    case 7:
+                    case 5:
                     case "end":
                       return _context3.stop();
                   }
@@ -115,7 +88,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               }, _callee3);
             })));
 
-          case 6:
+          case 5:
           case "end":
             return _context4.stop();
         }
@@ -123,7 +96,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }, _callee4, this);
   }));
 
-  return function (_x3, _x4, _x5) {
+  return function (_x5, _x6, _x7, _x8) {
     return _ref3.apply(this, arguments);
   };
 }());

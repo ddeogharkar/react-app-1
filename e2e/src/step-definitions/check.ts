@@ -9,7 +9,7 @@ import { waitFor } from "../support/wait-for-behavior";
 import { getElementLocator } from "../support/web-element-helper";
 import { ElementKey } from "../env/global";
 
-When(/^I (check)?(uncheck)? "([^"]*)" (?:checkbox|radio button)$/,async function(
+When(/^I (check)?(uncheck)? "([^"]*)" (?:checkbox|radio button|switch)$/,async function(
   this:ScenarioWorld,checked:boolean,unchecked:boolean,elementKey:ElementKey){
   const{
     screen:{page},

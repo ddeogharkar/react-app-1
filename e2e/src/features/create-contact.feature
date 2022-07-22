@@ -27,3 +27,8 @@ Feature: As a user I expect to be able to create contacts
     And the "address" should contain the text "742 Puma Terrace"
     And the "edit" should be displayed
     And the "delete" should be displayed
+
+  @dev
+  @smoke
+  @regression
+  Scenario: As a user I do not expect saved contact persist after a page refresh

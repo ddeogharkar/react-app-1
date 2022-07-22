@@ -2,7 +2,7 @@ import { When } from "@cucumber/cucumber";
 import { ScenarioWorld } from "./setup/world";
 
 import {
-  clickElement
+  clickElement, clickElementAtIndex
 } from "../support/html-behavior"
 import { waitFor } from "../support/wait-for-behavior";
 import { getElementLocator } from "../support/web-element-helper";
@@ -28,3 +28,28 @@ When(/^I click the "([^"]*)" (?:button|link|icon|element)$/,async function(this:
     return result;
   })
 });
+
+When(/^I click the "([0-9]+th|[0-9]+st|[0-9]+nd|[0-9]+rd)" "([^"]*)" (?:button|link)$/,
+async function(this:ScenarioWorld,elementPosition:string, elementKey:ElementKey){
+  const{
+    screen:{page},
+    globalConfig
+  }=this
+  console.log(`I click ${elementPosition} ${elementKey} button|link`);
+
+  const elementIdentifier = getElementLocator(page,elementKey,globalConfig);
+
+  const pageIndex = Number(elementPosition.match(/\d/g)?.join(''))-1
+
+  await waitFor(async()=>{
+    const result = await page.waitForSelector(elementIdentifier,{
+      state:"visible"
+    })
+
+    if(result){
+      await clickElementAtIndex(page,elementIdentifier,pageIndex);
+    }
+    return result;
+  })
+
+})

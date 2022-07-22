@@ -1,11 +1,11 @@
-import {Frame, Page} from "playwright"
-import {ElementLocator} from "../env/global"
+import { Frame, Page } from "playwright"
+import { ElementLocator } from "../env/global"
 
-export const clickElement= async(
-  page:Page,
-  elementIdentifier:ElementLocator
-  ):Promise<void>=>{
-    await page.click(elementIdentifier)
+export const clickElement = async (
+  page: Page,
+  elementIdentifier: ElementLocator
+): Promise<void> => {
+  await page.click(elementIdentifier)
 }
 
 export const inputValue = async (
@@ -27,57 +27,74 @@ export const selectValue = async (
 };
 
 export const checkElement = async (
-  page:Page,
-  elementIdentifier:ElementLocator,
-  
-):Promise<void>=>{
+  page: Page,
+  elementIdentifier: ElementLocator,
+
+): Promise<void> => {
   await page.focus(elementIdentifier);
   await page.check(elementIdentifier)
 }
 
 export const uncheckElement = async (
-  page:Page,
-  elementIdentifier:ElementLocator,
-  
-):Promise<void>=>{
+  page: Page,
+  elementIdentifier: ElementLocator,
+
+): Promise<void> => {
   await page.focus(elementIdentifier);
   await page.uncheck(elementIdentifier)
 }
 
-export const getValue = async(
-  page:Page,
-  elementIdentifier:ElementLocator): Promise<string | null> =>{
-    const value = await page.$eval<string,HTMLSelectElement>(elementIdentifier,el=>{
-      return el.value;
-    })    
-    return value;
-  }
+export const getValue = async (
+  page: Page,
+  elementIdentifier: ElementLocator): Promise<string | null> => {
+  const value = await page.$eval<string, HTMLSelectElement>(elementIdentifier, el => {
+    return el.value;
+  })
+  return value;
+}
 
-  export const getIframeElement = async(
-    page:Page,
-    iframeIdentifier:ElementLocator
-  ):Promise<Frame|undefined|null>=>{
-    await page.waitForSelector(iframeIdentifier)
-    const elementHandle = await page.$(iframeIdentifier)
-    const elementIframe = await elementHandle?.contentFrame();
+export const getIframeElement = async (
+  page: Page,
+  iframeIdentifier: ElementLocator
+): Promise<Frame | undefined | null> => {
+  await page.waitForSelector(iframeIdentifier)
+  const elementHandle = await page.$(iframeIdentifier)
+  const elementIframe = await elementHandle?.contentFrame();
 
-    return elementIframe;
-  }
+  return elementIframe;
+}
 
-  export const inputValueOnIframe = async(
-    elementIframe:Frame,
-    elementIdentifier:ElementLocator,
-    inputValue:string
-  ):Promise<void>=>{
-    await elementIframe.fill(elementIdentifier,inputValue) 
-  }
+export const inputValueOnIframe = async (
+  elementIframe: Frame,
+  elementIdentifier: ElementLocator,
+  inputValue: string
+): Promise<void> => {
+  await elementIframe.fill(elementIdentifier, inputValue)
+}
 
-  export const inputValueOnPage = async(
-    pages:Array<Page>,
-    PageIndex:number,
-    elementIdentifier:ElementLocator,
-    inputValue:string
-  ):Promise<void>=>{
-    await pages[PageIndex].focus(elementIdentifier);
-    await pages[PageIndex].fill(elementIdentifier,inputValue);
-  }
+export const inputValueOnPage = async (
+  pages: Array<Page>,
+  PageIndex: number,
+  elementIdentifier: ElementLocator,
+  inputValue: string
+): Promise<void> => {
+  await pages[PageIndex].focus(elementIdentifier);
+  await pages[PageIndex].fill(elementIdentifier, inputValue);
+}
+
+export const clickElementAtIndex = async (
+  page: Page,
+  elementIdentifier: ElementLocator,
+  elementPosition: number
+): Promise<void> => {
+  await page.locator(elementIdentifier).nth(elementPosition).click()
+}
+
+export const getAttributeText = async (
+  page: Page,
+  elementIdentifier: ElementLocator,
+  attribute: string,
+): Promise<string | null> => {
+  const attributeText = page.locator(elementIdentifier).getAttribute(attribute)
+  return attributeText;
+}

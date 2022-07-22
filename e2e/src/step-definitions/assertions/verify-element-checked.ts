@@ -6,7 +6,7 @@ import { getElementLocator} from "../../support/web-element-helper"
 import {waitFor} from "../../support/wait-for-behavior"
 
 Then(
-  /^the "([^"]*)" (?:checkbox|radio button) should( not)? be checked$/,
+  /^the "([^"]*)" (?:checkbox|radio button|switch) should( not)? be checked$/,
   async function (this:ScenarioWorld,elementKey: ElementKey,negate:boolean) {
     const {
       screen:{page},      
