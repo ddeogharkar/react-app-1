@@ -6,8 +6,9 @@
   "scripts": {
     "precucumber": "rimraf reports && mkdir reports && echo {} > reports/report.json",
     "transpile": "rimraf dist && babel --extensions .ts --out-dir dist src",
-    "cucumber-compile": "yarn transpile && cucumber-js",
-    "cucumber": "yarn cucumber-compile",
+    "cucumber": "yarn transpile && cucumber-js",
+    "cucumber:localhost": "yarn cucumber",
+    "cucumber:production": "yarn cucumber",
     "postcucumber": "ts-node ./src/reporter/cucumber-report.ts"
   },
   "author": "",

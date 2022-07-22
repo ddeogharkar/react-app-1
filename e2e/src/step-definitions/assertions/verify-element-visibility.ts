@@ -8,26 +8,21 @@ import { waitFor } from "../../support/wait-for-behavior"
 
 Then(
   /^the "([^"]*)" should( not)? be displayed$/,
-  async function (this: ScenarioWorld, elementKey: string, negate: boolean) {
+  async function (this: ScenarioWorld, elementKey: ElementKey, negate: boolean) {
     const {
       screen: { page },
       globalConfig,
     } = this;
 
-    console.log(`the ${elementKey} should ${negate ? `not` : ``} be displayed`);
-
-    //const locator = page.locator("[data-id='header logo']")
+    console.log(`the ${elementKey} should ${negate ? 'not' : ''} be displayed`)
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
-    //const locator = page.locator(elementIdentifier)
-    //await expect(locator).toBeVisible();
 
     await waitFor(async () => {
-      const isElementVisible = (await page.$(elementIdentifier)) != null
-      return isElementVisible === !negate;
-    })
-  }
-);
+      const isElementVisible = (await page.$(elementIdentifier)) != null;
+      return isElementVisible === !negate
+    });
+  })
 
 
 Then(/^the "([0-9]+th|[0-9]+st|[0-9]+nd|[0-9]+rd)" "([^"]*)" should( not)? be displayed$/,

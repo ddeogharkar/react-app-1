@@ -32,14 +32,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   switch (_context.prev = _context.next) {
                     case 0:
                       _context.next = 2;
-                      return page.textContent(elementIdentifier);
+                      return page.waitForSelector(elementIdentifier);
 
                     case 2:
+                      _context.next = 4;
+                      return page.textContent(elementIdentifier);
+
+                    case 4:
                       elementText = _context.sent;
                       console.log("elementText", elementText);
                       return _context.abrupt("return", (elementText === null || elementText === void 0 ? void 0 : elementText.includes(expectedElementValue)) === !negate);
 
-                    case 5:
+                    case 7:
                     case "end":
                       return _context.stop();
                   }

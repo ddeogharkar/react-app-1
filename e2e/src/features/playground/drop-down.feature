@@ -1,5 +1,5 @@
 Feature:As a user I can interact with drop down menues
-
+  @dev
   @smoke
   @regression
   Scenario:As a user I can interact and assert on drop down menues

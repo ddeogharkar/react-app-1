@@ -47,6 +47,7 @@ export const uncheckElement = async (
 export const getValue = async (
   page: Page,
   elementIdentifier: ElementLocator): Promise<string | null> => {
+  await page.waitForSelector(elementIdentifier)
   const value = await page.$eval<string, HTMLSelectElement>(elementIdentifier, el => {
     return el.value;
   })
@@ -97,4 +98,12 @@ export const getAttributeText = async (
 ): Promise<string | null> => {
   const attributeText = page.locator(elementIdentifier).getAttribute(attribute)
   return attributeText;
+}
+
+
+export const scrollInToView = async (
+  page: Page,
+  elementIdentifier: ElementLocator): Promise<void> => {
+  const element = page.locator(elementIdentifier);
+  await element.scrollIntoViewIfNeeded();
 }

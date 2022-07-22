@@ -18,11 +18,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         switch (_context2.prev = _context2.next) {
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig;
-            console.log("the ".concat(elementKey, " should ").concat(negate ? "not" : "", " be displayed")); //const locator = page.locator("[data-id='header logo']")
-
-            elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig); //const locator = page.locator(elementIdentifier)
-            //await expect(locator).toBeVisible();
-
+            console.log("the ".concat(elementKey, " should ").concat(negate ? 'not' : '', " be displayed"));
+            elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             _context2.next = 5;
             return (0, _waitForBehavior.waitFor)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
               var isElementVisible;

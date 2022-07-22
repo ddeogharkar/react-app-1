@@ -1,15 +1,16 @@
-import { Before, After,ITestCaseHookParameter,setDefaultTimeout } from "@cucumber/cucumber";
-import {ScenarioWorld} from "./world" 
-import {env,envNumber} from "../../env/parseEnv"
+import { Before, After, ITestCaseHookParameter, setDefaultTimeout } from "@cucumber/cucumber";
+import { ScenarioWorld } from "./world"
+import { env, envNumber } from "../../env/parseEnv"
 
 setDefaultTimeout(envNumber('SCRIPT_TIMEOUT'));
 
-Before(async function(this:ScenarioWorld, scenario) {
+Before(async function (this: ScenarioWorld, scenario) {
   console.log(`running cucumber scenarion ${scenario.pickle.name}`);
-
   const contextOptions = {
-    recordVideo:{
-      dir:`${env('VIDEO_PATH')}${scenario.pickle.name}`,
+    ignoreHTTPSErrors: true,
+    recordVideo: {
+
+      dir: `${env('VIDEO_PATH')}${scenario.pickle.name}`,
     }
   }
   const ready = await this.init(contextOptions);
@@ -17,20 +18,20 @@ Before(async function(this:ScenarioWorld, scenario) {
   return ready;
 });
 
-After(async function(this:ScenarioWorld,scenario) {
+After(async function (this: ScenarioWorld, scenario) {
 
   const {
-    screen:{page,browser}
-  }=this;
+    screen: { page, browser }
+  } = this;
 
   const scenarioStatus = scenario.result?.status;
 
-  if(scenarioStatus==="FAILED"){
+  if (scenarioStatus === "FAILED") {
     const screenshot = await page.screenshot({
-      path:`${env('SCREENSHOTS_PATH')}${scenario.pickle.name}.png`
+      path: `${env('SCREENSHOTS_PATH')}${scenario.pickle.name}.png`
     });
 
-    await this.attach(screenshot,'image/png')
+    await this.attach(screenshot, 'image/png')
   }
   await browser.close();
 

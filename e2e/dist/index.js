@@ -25,24 +25,30 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var environment = (0, _parseEnv.env)('NODE_ENV');
+
 _dotenv.default.config({
   path: (0, _parseEnv.env)('COMMON_CONFIG_FILE')
 });
 
-var hostsConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('HOSTS_URLS_PATH'));
-console.log("hostsConfig", hostsConfig);
-var pagesConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('PAGE_URLS_PATH'));
-console.log("pagesConfig", pagesConfig);
-var mappingFiles = fs.readdirSync("".concat(process.cwd()).concat((0, _parseEnv.env)('PAGE_ELEMENTS_PATH')));
-console.log("mappingFiles", mappingFiles);
+_dotenv.default.config({
+  path: "".concat((0, _parseEnv.env)('ENV_PATH')).concat(environment, ".env")
+});
+
+var hostsConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('HOSTS_URLS_PATH')); //console.log("hostsConfig", hostsConfig)
+
+var pagesConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('PAGE_URLS_PATH')); //console.log("pagesConfig", pagesConfig)
+
+var mappingFiles = fs.readdirSync("".concat(process.cwd()).concat((0, _parseEnv.env)('PAGE_ELEMENTS_PATH'))); //console.log("mappingFiles", mappingFiles)
+
 var pageElementMappings = mappingFiles.reduce(function (pageElementConfigAcc, file) {
-  console.log("pageElementConfigAcc", pageElementConfigAcc);
-  console.log("file", file);
+  //console.log("pageElementConfigAcc", pageElementConfigAcc)
+  //console.log("file", file)
   var key = file.replace('.json', '');
   var elementMappings = (0, _parseEnv.getJsonFromFile)("".concat((0, _parseEnv.env)('PAGE_ELEMENTS_PATH')).concat(file));
   return _objectSpread(_objectSpread({}, pageElementConfigAcc), {}, _defineProperty({}, key, elementMappings));
-}, {});
-console.log("pageElementMappings", pageElementMappings);
+}, {}); //console.log("pageElementMappings", pageElementMappings)
+
 var worldParameters = {
   hostsConfig: hostsConfig,
   pagesConfig: pagesConfig,
