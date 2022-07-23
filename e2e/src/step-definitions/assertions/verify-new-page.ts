@@ -3,6 +3,7 @@ import { ScenarioWorld } from "../setup/world";
 import { ElementKey } from "../../env/global"
 import { getElementLocator } from "../../support/web-element-helper"
 import { waitFor } from "../../support/wait-for-behavior"
+import { logger } from "../../logger";
 
 Then(
   /^the "([0-9]+th|[0-9]+st|[0-9]+nd|[0-9]+rd)" (?:tab|window) should( not)? contain the title "(.*)"$/,
@@ -14,7 +15,7 @@ Then(
       globalConfig
     } = this
 
-    console.log(`the ${elementPosition} tab|window should ${negate ? `not` : ``} contain the title ${expectedTitle}`);
+    logger.log(`the ${elementPosition} tab|window should ${negate ? `not` : ``} contain the title ${expectedTitle}`);
 
     const pageIndex = Number(elementPosition.match(/\d/g)?.join('')) - 1
 
@@ -36,7 +37,7 @@ Then(
       globalConfig
     } = this
 
-    console.log(`the ${ElementKey} on the ${elementPosition} tab|window should ${negate ? `not` : ``} be displayed`);
+    logger.log(`the ${ElementKey} on the ${elementPosition} tab|window should ${negate ? `not` : ``} be displayed`);
 
     const pageIndex = Number(elementPosition.match(/\d/g)?.join('')) - 1
 
@@ -60,7 +61,7 @@ Then(
 
     } = this
 
-    console.log(`the ${elementKey} on the ${elementPosition} tab|window should ${negate ? `not` : ``} contain the text ${expectedValue}`);
+    logger.log(`the ${elementKey} on the ${elementPosition} tab|window should ${negate ? `not` : ``} contain the text ${expectedValue}`);
 
     const pageIndex = Number(elementPosition.match(/\d/g)?.join('')) - 1
 
@@ -85,7 +86,7 @@ Then(
 
     } = this
 
-    console.log(`the ${elementKey} on the ${elementPosition} tab|window should ${negate ? `not` : ``} equal the text ${expectedValue}`);
+    logger.log(`the ${elementKey} on the ${elementPosition} tab|window should ${negate ? `not` : ``} equal the text ${expectedValue}`);
 
     const pageIndex = Number(elementPosition.match(/\d/g)?.join('')) - 1
 

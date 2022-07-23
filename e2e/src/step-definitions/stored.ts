@@ -3,6 +3,7 @@ import { ScenarioWorld } from "./setup/world";
 import { ElementKey } from "../env/global"
 import { getElementLocator } from "../support/web-element-helper"
 import { waitFor } from "../support/wait-for-behavior"
+import { logger } from "../logger";
 
 
 Then(/^I retrieve the "([^"]*)" text and store it as "([^"]*)" in global variables$/,
@@ -14,7 +15,7 @@ Then(/^I retrieve the "([^"]*)" text and store it as "([^"]*)" in global variabl
       globalVariables
     } = this
 
-    console.log(`I retrieve the ${elementKey} text and store it as ${variableKey} in global variables`);
+    logger.log(`I retrieve the ${elementKey} text and store it as ${variableKey} in global variables`);
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 

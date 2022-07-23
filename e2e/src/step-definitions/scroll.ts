@@ -4,6 +4,7 @@ import { ElementKey } from "../env/global"
 import { getElementLocator } from "../support/web-element-helper"
 import { waitFor } from "../support/wait-for-behavior"
 import { scrollInToView } from "../support/html-behavior";
+import { logger } from "../logger";
 
 Then(/^I scroll to the "([^"]*)"$/, async function (
   this: ScenarioWorld, elementKey: ElementKey) {
@@ -12,7 +13,7 @@ Then(/^I scroll to the "([^"]*)"$/, async function (
     globalConfig
   } = this
 
-  console.log(`I scroll to the ${elementKey}`)
+  logger.log(`I scroll to the ${elementKey}`)
 
   const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 

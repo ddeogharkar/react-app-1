@@ -4,6 +4,7 @@ import { ScenarioWorld } from "../setup/world";
 import { ElementKey } from "../../env/global"
 import { getElementLocator } from "../../support/web-element-helper"
 import { waitFor } from "../../support/wait-for-behavior"
+import { logger } from "../../logger";
 
 
 Then(
@@ -14,7 +15,7 @@ Then(
       globalConfig,
     } = this;
 
-    console.log(`the ${elementKey} should ${negate ? 'not' : ''} be displayed`)
+    logger.log(`the ${elementKey} should ${negate ? 'not' : ''} be displayed`)
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
@@ -32,7 +33,7 @@ Then(/^the "([0-9]+th|[0-9]+st|[0-9]+nd|[0-9]+rd)" "([^"]*)" should( not)? be di
       globalConfig
     } = this
 
-    console.log(`the ${elementPosition} ${elementKey} should ${negate ? `not` : ``} be displayed`)
+    logger.log(`the ${elementPosition} ${elementKey} should ${negate ? `not` : ``} be displayed`)
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
@@ -51,7 +52,7 @@ Then(/^I should( not)? see "(\d*)" "([^"]*)" displayed$/,
       globalConfig
     } = this
 
-    console.log(`I should ${negate ? `not` : ``} see ${count} ${elementKey} displayed`)
+    logger.log(`I should ${negate ? `not` : ``} see ${count} ${elementKey} displayed`)
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 

@@ -3,6 +3,7 @@ import { ScenarioWorld } from "../setup/world";
 import { ElementKey } from "../../env/global"
 import { getElementLocator } from "../../support/web-element-helper"
 import { waitFor } from "../../support/wait-for-behavior"
+import { logger } from "../../logger";
 
 Then(
   /^the "([^"]*)" table should( not)? equal the following:$/,
@@ -12,14 +13,14 @@ Then(
       globalConfig
     } = this
 
-    console.log(`the ${elementKey} table should ${negate ? `not` : ``} equal the following:`)
+    logger.log(`the ${elementKey} table should ${negate ? `not` : ``} equal the following:`)
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
 
 
-    // console.log("html table ", JSON.stringify(dataBefore))
-    // console.log("cucumber table ", JSON.stringify(dataTable.raw()))
+    // logger.log("html table ", JSON.stringify(dataBefore))
+    // logger.log("cucumber table ", JSON.stringify(dataTable.raw()))
 
     await waitFor(async () => {
       const dataBefore = await page.$$eval(elementIdentifier + " tbody tr", (rows) => {

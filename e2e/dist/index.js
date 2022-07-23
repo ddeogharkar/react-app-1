@@ -13,6 +13,8 @@ var _parseEnv = require("./env/parseEnv");
 
 var fs = _interopRequireWildcard(require("fs"));
 
+var _tagHelper = require("./support/tag-helper");
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -25,6 +27,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//import { logger } from "./logger";
 var environment = (0, _parseEnv.env)('NODE_ENV');
 
 _dotenv.default.config({
@@ -35,30 +38,45 @@ _dotenv.default.config({
   path: "".concat((0, _parseEnv.env)('ENV_PATH')).concat(environment, ".env")
 });
 
-var hostsConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('HOSTS_URLS_PATH')); //console.log("hostsConfig", hostsConfig)
+var hostsConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('HOSTS_URLS_PATH')); //logger.log("hostsConfig", hostsConfig)
 
-var pagesConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('PAGE_URLS_PATH')); //console.log("pagesConfig", pagesConfig)
+var pagesConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('PAGE_URLS_PATH')); //logger.log("pagesConfig", pagesConfig)
 
-var mappingFiles = fs.readdirSync("".concat(process.cwd()).concat((0, _parseEnv.env)('PAGE_ELEMENTS_PATH'))); //console.log("mappingFiles", mappingFiles)
+var mappingFiles = fs.readdirSync("".concat(process.cwd()).concat((0, _parseEnv.env)('PAGE_ELEMENTS_PATH'))); //logger.log("mappingFiles", mappingFiles)
 
+var getEnvList = function getEnvList() {
+  var envList = Object.keys(hostsConfig);
+
+  if (envList.length === 0) {
+    throw Error("\uD83D\uDC1E No environment mapped in your ".concat((0, _parseEnv.env)('HOSTS_URL_PATH')));
+  }
+
+  return envList;
+};
+
+var emailsConfig = (0, _parseEnv.getJsonFromFile)((0, _parseEnv.env)('EMAILS_URLS_PATH'));
 var pageElementMappings = mappingFiles.reduce(function (pageElementConfigAcc, file) {
-  //console.log("pageElementConfigAcc", pageElementConfigAcc)
-  //console.log("file", file)
+  //logger.log("pageElementConfigAcc", pageElementConfigAcc)
+  //logger.log("file", file)
   var key = file.replace('.json', '');
   var elementMappings = (0, _parseEnv.getJsonFromFile)("".concat((0, _parseEnv.env)('PAGE_ELEMENTS_PATH')).concat(file));
   return _objectSpread(_objectSpread({}, pageElementConfigAcc), {}, _defineProperty({}, key, elementMappings));
-}, {}); //console.log("pageElementMappings", pageElementMappings)
+}, {}); //logger.log("pageElementMappings", pageElementMappings)
 
 var worldParameters = {
   hostsConfig: hostsConfig,
   pagesConfig: pagesConfig,
-  pageElementMappings: pageElementMappings
+  pageElementMappings: pageElementMappings,
+  emailsConfig: emailsConfig
 };
 var common = "./src/features/**/*.feature                 --require-module ts-node/register                 --require ./src/step-definitions/**/**/*.ts                 --world-parameters ".concat(JSON.stringify(worldParameters), "                 -f json:./reports/report.json                 --format progress-bar                 --parallel ").concat((0, _parseEnv.env)('PARALLEL'), "                 --retry ").concat((0, _parseEnv.env)('RETRY'), " ");
-var dev = "".concat(common, " --tags '@dev'");
+var dev = (0, _tagHelper.generateCucumberRuntimeTag)(common, environment, getEnvList(), 'dev'); //const dev = `${common} --tags '@dev'`;
+//const smoke = `${common} --tags '@smoke'`;
+//const regression = `${common} --tags '@regression'`;
+
 exports.dev = dev;
-var smoke = "".concat(common, " --tags '@smoke'");
+var smoke = (0, _tagHelper.generateCucumberRuntimeTag)(common, environment, getEnvList(), 'smoke');
 exports.smoke = smoke;
-var regression = "".concat(common, " --tags '@regression'");
+var regression = (0, _tagHelper.generateCucumberRuntimeTag)(common, environment, getEnvList(), 'regression'); //logger.log('\n🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 \n');
+
 exports.regression = regression;
-console.log('\n🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 \n');

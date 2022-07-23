@@ -1,5 +1,6 @@
 import { Given, setDefaultTimeout } from "@cucumber/cucumber";
 import { PageId } from "../env/global";
+import { logger } from "../logger";
 import { currentPathMatchesPageId, navigateToPage, reloadPage } from "../support/navigation-behavior";
 import { waitFor } from "../support/wait-for-behavior";
 import { ScenarioWorld } from "./setup/world";
@@ -10,7 +11,7 @@ Given(/^I am on the "([^"]*)" page$/, async function (this: ScenarioWorld, pageI
     screen: { page },
     globalConfig,
   } = this
-  console.log(`I am on the ${pageId} page`);
+  logger.log(`I am on the ${pageId} page`);
 
   await navigateToPage(page, pageId, globalConfig)
   //await page.goto("http://localhost:3000/");
@@ -26,7 +27,7 @@ Given(/^I am directed to the "([^"]*)" page$/, async function (this: ScenarioWor
     globalConfig,
   } = this
 
-  console.log(`I am direceted to the ${pageId} page`);
+  logger.log(`I am direceted to the ${pageId} page`);
 
   await waitFor(() => currentPathMatchesPageId(page, pageId, globalConfig));
 })
@@ -39,7 +40,7 @@ Given(/^I refresh the "([^"]*)" page$/, async function (
     globalConfig
   } = this
 
-  console.log(`I refresh the ${pageId} page`)
+  logger.log(`I refresh the ${pageId} page`)
 
 
   await reloadPage(page)

@@ -4,6 +4,7 @@ import { ElementKey } from "../../env/global"
 import { getElementLocator } from "../../support/web-element-helper"
 import { waitFor } from "../../support/wait-for-behavior"
 import { getIframeElement } from "../../support/html-behavior";
+import { logger } from "../../logger";
 
 Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? be displayed$/, async function (
   this: ScenarioWorld, elementKey: ElementKey, iframeName: string, negate: boolean) {
@@ -12,7 +13,7 @@ Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? be displayed$/, async
     globalConfig,
   } = this
 
-  console.log(`the ${elementKey} on the ${iframeName} iframe should ${negate ? `not` : ``} be displayed`);
+  logger.log(`the ${elementKey} on the ${iframeName} iframe should ${negate ? `not` : ``} be displayed`);
 
   const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
   const iframeIdentifier = getElementLocator(page, iframeName, globalConfig);
@@ -35,8 +36,8 @@ Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? contain the text "(.*
       globalConfig,
     } = this
 
-    console.log("expectedElementValue", expectedElementValue);
-    console.log(
+    logger.log("expectedElementValue", expectedElementValue);
+    logger.log(
       `the ${elementKey} on the ${iframeName} iframe should ${negate ? `not` : ``} contain the text ${expectedElementValue}`
     );
 
@@ -47,7 +48,7 @@ Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? contain the text "(.*
     await waitFor(async () => {
       const elementIframe = await getIframeElement(page, iframeIdentifier);
       const elementText = await elementIframe?.textContent(elementIdentifier);
-      console.log("elementText", elementText)
+      logger.log("elementText", elementText)
       return elementText?.includes(expectedElementValue) === !negate;
     })
 
@@ -62,8 +63,8 @@ Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? equal the text "(.*)"
       globalConfig,
     } = this
 
-    console.log("expectedElementValue", expectedElementValue);
-    console.log(
+    logger.log("expectedElementValue", expectedElementValue);
+    logger.log(
       `the ${elementKey} on the ${iframeName} iframe should ${negate ? `not` : ``} equal the text ${expectedElementValue}`
     );
 
@@ -74,7 +75,7 @@ Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? equal the text "(.*)"
     await waitFor(async () => {
       const elementIframe = await getIframeElement(page, iframeIdentifier);
       const elementText = await elementIframe?.textContent(elementIdentifier);
-      console.log("elementText", elementText)
+      logger.log("elementText", elementText)
       return (elementText === expectedElementValue) === !negate;
     })
 

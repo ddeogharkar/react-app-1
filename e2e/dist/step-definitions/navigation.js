@@ -2,6 +2,8 @@
 
 var _cucumber = require("@cucumber/cucumber");
 
+var _logger = require("../logger");
+
 var _navigationBehavior = require("../support/navigation-behavior");
 
 var _waitForBehavior = require("../support/wait-for-behavior");
@@ -18,7 +20,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         switch (_context.prev = _context.next) {
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig;
-            console.log("I am on the ".concat(pageId, " page"));
+
+            _logger.logger.log("I am on the ".concat(pageId, " page"));
+
             _context.next = 4;
             return (0, _navigationBehavior.navigateToPage)(page, pageId, globalConfig);
 
@@ -48,7 +52,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         switch (_context2.prev = _context2.next) {
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig;
-            console.log("I am direceted to the ".concat(pageId, " page"));
+
+            _logger.logger.log("I am direceted to the ".concat(pageId, " page"));
+
             _context2.next = 4;
             return (0, _waitForBehavior.waitFor)(function () {
               return (0, _navigationBehavior.currentPathMatchesPageId)(page, pageId, globalConfig);
@@ -74,7 +80,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         switch (_context3.prev = _context3.next) {
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig;
-            console.log("I refresh the ".concat(pageId, " page"));
+
+            _logger.logger.log("I refresh the ".concat(pageId, " page"));
+
             _context3.next = 4;
             return (0, _navigationBehavior.reloadPage)(page);
 
