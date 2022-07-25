@@ -14,7 +14,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-(0, _cucumber.When)(/^I (check)?(uncheck)? "([^"]*)" (?:checkbox|radio button|switch)$/, /*#__PURE__*/function () {
+(0, _cucumber.Then)(/^I (check)?(uncheck)? the "([^"]*)" (?:check box|radio button|switch)$/, /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(checked, unchecked, elementKey) {
     var page, globalConfig, elementIdentifier;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -23,31 +23,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig;
 
-            _logger.logger.log("I ".concat(unchecked ? "uncheck" : "check", " ").concat(elementKey, " checkbox|radio button"));
+            _logger.logger.log("I ".concat(unchecked ? 'uncheck ' : 'check', " the ").concat(elementKey, " check box|radio button"));
 
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             _context2.next = 5;
             return (0, _waitForBehavior.waitFor)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var result;
+              var elementStable;
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
                       _context.next = 2;
-                      return page.waitForSelector(elementIdentifier, {
-                        state: "visible"
-                      });
+                      return (0, _waitForBehavior.waitForSelector)(page, elementIdentifier);
 
                     case 2:
-                      result = _context.sent;
+                      elementStable = _context.sent;
 
-                      if (!result) {
-                        _context.next = 11;
+                      if (!elementStable) {
+                        _context.next = 13;
                         break;
                       }
 
                       if (!unchecked) {
-                        _context.next = 9;
+                        _context.next = 10;
                         break;
                       }
 
@@ -55,23 +53,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       return (0, _htmlBehavior.uncheckElement)(page, elementIdentifier);
 
                     case 7:
-                      _context.next = 11;
-                      break;
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.PASS);
 
-                    case 9:
-                      _context.next = 11;
+                    case 10:
+                      _context.next = 12;
                       return (0, _htmlBehavior.checkElement)(page, elementIdentifier);
 
-                    case 11:
-                      return _context.abrupt("return", result);
-
                     case 12:
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.PASS);
+
+                    case 13:
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE);
+
+                    case 14:
                     case "end":
                       return _context.stop();
                   }
                 }
               }, _callee);
-            })));
+            })), globalConfig, {
+              target: elementKey
+            });
 
           case 5:
           case "end":

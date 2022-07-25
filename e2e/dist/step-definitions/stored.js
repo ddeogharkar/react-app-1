@@ -26,21 +26,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             _context2.next = 5;
             return (0, _waitForBehavior.waitFor)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var result, elementText;
+              var elementStable, elementText;
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
                       _context.next = 2;
-                      return page.waitForSelector(elementIdentifier, {
-                        state: "visible"
-                      });
+                      return (0, _waitForBehavior.waitForSelector)(page, elementIdentifier);
 
                     case 2:
-                      result = _context.sent;
+                      elementStable = _context.sent;
 
-                      if (!result) {
-                        _context.next = 9;
+                      if (!elementStable) {
+                        _context.next = 10;
                         break;
                       }
 
@@ -50,19 +48,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     case 6:
                       elementText = _context.sent;
 
-                      if (elementText != null) {
-                        globalVariables[variableKey] = elementText;
+                      if (!(elementText != null)) {
+                        _context.next = 10;
+                        break;
                       }
 
-                      return _context.abrupt("return", result);
+                      globalVariables[variableKey] = elementText;
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.PASS);
 
-                    case 9:
+                    case 10:
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE);
+
+                    case 11:
                     case "end":
                       return _context.stop();
                   }
                 }
               }, _callee);
-            })));
+            })), globalConfig, {
+              target: elementKey
+            });
 
           case 5:
           case "end":

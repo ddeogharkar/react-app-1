@@ -9,11 +9,11 @@ exports.ScenarioWorld = void 0;
 
 var _playwright = _interopRequireDefault(require("playwright"));
 
-var _cucumber = require("@cucumber/cucumber");
-
 var _parseEnv = require("../../env/parseEnv");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _cucumber = require("@cucumber/cucumber");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -66,14 +66,13 @@ var ScenarioWorld = /*#__PURE__*/function (_World) {
           switch (_context.prev = _context.next) {
             case 0:
               automationBrowsers = ['chromium', 'firefox', 'webkit'];
-              automationBrowser = (0, _parseEnv.env)('UI_AUTOMATION_BROWSER'); //UI_AUTOMATION_BROWSER
-
-              browserType = _playwright.default[automationBrowser];
+              automationBrowser = (0, _parseEnv.env)('UI_AUTOMATION_BROWSER');
+              browserType = _playwright["default"][automationBrowser];
               _context.next = 5;
               return browserType.launch({
                 devtools: process.env.DEVTOOLS !== 'false',
                 headless: process.env.HEADLESS !== 'false',
-                args: ['--disable-web-security', '--disable-features=IsolateOrigins,site-per-process']
+                args: ['--disable-web-security', '--disable-features=IsolateOrigins, site-per-process']
               });
 
             case 5:
@@ -122,7 +121,7 @@ var ScenarioWorld = /*#__PURE__*/function (_World) {
               case 8:
                 browser = _context2.sent;
                 _context2.next = 11;
-                return browser.newContext();
+                return browser.newContext(contextOptions);
 
               case 11:
                 context = _context2.sent;

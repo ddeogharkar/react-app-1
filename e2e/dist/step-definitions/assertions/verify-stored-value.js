@@ -8,6 +8,8 @@ var _waitForBehavior = require("../../support/wait-for-behavior");
 
 var _logger = require("../../logger");
 
+var _htmlBehavior = require("../../support/html-behavior");
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -26,26 +28,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             _context2.next = 5;
             return (0, _waitForBehavior.waitFor)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var elementText, variableValue;
+              var elementStable, variableValue, elementText;
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
                       _context.next = 2;
-                      return page.textContent(elementIdentifier);
+                      return (0, _waitForBehavior.waitForSelector)(page, elementIdentifier);
 
                     case 2:
-                      elementText = _context.sent;
+                      elementStable = _context.sent;
                       variableValue = globalVariables[variableKey];
-                      return _context.abrupt("return", elementText === variableValue === !negate);
 
-                    case 5:
+                      if (!elementStable) {
+                        _context.next = 15;
+                        break;
+                      }
+
+                      _context.next = 7;
+                      return (0, _htmlBehavior.getElementText)(page, elementIdentifier);
+
+                    case 7:
+                      elementText = _context.sent;
+
+                      if (!(elementText === variableValue === !negate)) {
+                        _context.next = 12;
+                        break;
+                      }
+
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.PASS);
+
+                    case 12:
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.FAIL);
+
+                    case 13:
+                      _context.next = 16;
+                      break;
+
+                    case 15:
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE);
+
+                    case 16:
                     case "end":
                       return _context.stop();
                   }
                 }
               }, _callee);
-            })));
+            })), globalConfig, {
+              target: elementKey,
+              failureMessage: "\uD83E\uDDE8 Expected ".concat(elementKey, " to ").concat(negate ? 'not ' : '', "contain the ").concat(variableKey, " in global variables \uD83E\uDDE8")
+            });
 
           case 5:
           case "end":
@@ -68,31 +100,61 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig, globalVariables = this.globalVariables;
 
-            _logger.logger.log("the ".concat(elementKey, " should ").concat(negate ? 'not ' : '', "contains the ").concat(globalVariables[variableKey], " stored in global variables"));
+            _logger.logger.log("the ".concat(elementKey, " should ").concat(negate ? 'not ' : '', "contain the ").concat(globalVariables[variableKey], " stored in global variables"));
 
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             _context4.next = 5;
             return (0, _waitForBehavior.waitFor)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-              var elementText, variableValues;
+              var elementStable, variableValue, elementText;
               return regeneratorRuntime.wrap(function _callee3$(_context3) {
                 while (1) {
                   switch (_context3.prev = _context3.next) {
                     case 0:
                       _context3.next = 2;
-                      return page.textContent(elementIdentifier);
+                      return (0, _waitForBehavior.waitForSelector)(page, elementIdentifier);
 
                     case 2:
-                      elementText = _context3.sent;
-                      variableValues = globalVariables[variableKey];
-                      return _context3.abrupt("return", (elementText === null || elementText === void 0 ? void 0 : elementText.includes(variableValues)) === !negate);
+                      elementStable = _context3.sent;
+                      variableValue = globalVariables[variableKey];
 
-                    case 5:
+                      if (!elementStable) {
+                        _context3.next = 15;
+                        break;
+                      }
+
+                      _context3.next = 7;
+                      return (0, _htmlBehavior.getElementText)(page, elementIdentifier);
+
+                    case 7:
+                      elementText = _context3.sent;
+
+                      if (!((elementText === null || elementText === void 0 ? void 0 : elementText.includes(variableValue)) === !negate)) {
+                        _context3.next = 12;
+                        break;
+                      }
+
+                      return _context3.abrupt("return", _waitForBehavior.waitForResult.PASS);
+
+                    case 12:
+                      return _context3.abrupt("return", _waitForBehavior.waitForResult.FAIL);
+
+                    case 13:
+                      _context3.next = 16;
+                      break;
+
+                    case 15:
+                      return _context3.abrupt("return", _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE);
+
+                    case 16:
                     case "end":
                       return _context3.stop();
                   }
                 }
               }, _callee3);
-            })));
+            })), globalConfig, {
+              target: elementKey,
+              failureMessage: "\uD83E\uDDE8 Expected ".concat(elementKey, " to ").concat(negate ? 'not ' : '', "contain the ").concat(variableKey, " in global variables0 \uD83E\uDDE8")
+            });
 
           case 5:
           case "end":

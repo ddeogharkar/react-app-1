@@ -5,13 +5,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.reloadPage = exports.navigateToPage = exports.getCurrentPageId = exports.currentPathMatchesPageId = void 0;
 
+var _waitForBehavior = require("./wait-for-behavior");
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var navigateToPage = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(page, pageId, _ref) {
-    var pagesConfig, hostsConfig, _process$env$UI_AUTOM, hostName, hostPath, url, pagesConfigItem;
+    var pagesConfig, hostsConfig, _process$env$UI_AUTOM, hostName, hostPath, url, pageConfigItem;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -19,16 +21,12 @@ var navigateToPage = /*#__PURE__*/function () {
           case 0:
             pagesConfig = _ref.pagesConfig, hostsConfig = _ref.hostsConfig;
             _process$env$UI_AUTOM = process.env.UI_AUTOMATION_HOST, hostName = _process$env$UI_AUTOM === void 0 ? 'localhost' : _process$env$UI_AUTOM;
-            hostPath = hostsConfig["".concat(hostName)]; //logger.log(`host path = ${hostPath}`)
-
-            url = new URL(hostPath); //logger.log(`url = ${url}`)
-
-            pagesConfigItem = pagesConfig[pageId]; //logger.log("pagesConfigItem" +pagesConfigItem)
-
-            url.pathname = pagesConfigItem.route; //logger.log(`url path = ${url.pathname}`)
-
+            hostPath = hostsConfig["".concat(hostName)];
+            url = new URL(hostPath);
+            pageConfigItem = pagesConfig[pageId];
+            url.pathname = pageConfigItem.route;
             _context.next = 8;
-            return page.goto(url.href);
+            return page["goto"](url.href);
 
           case 8:
           case "end":
@@ -54,28 +52,30 @@ var pathMatchesPageId = function pathMatchesPageId(path, pageId, _ref3) {
 
 var currentPathMatchesPageId = function currentPathMatchesPageId(page, pageId, globalConfig) {
   var _URL = new URL(page.url()),
-      currentPath = _URL.pathname; //logger.log("current path " , currentPath);
+      currentPath = _URL.pathname;
 
+  if (pathMatchesPageId(currentPath, pageId, globalConfig)) {
+    return _waitForBehavior.waitForResult.PASS;
+  }
 
-  return pathMatchesPageId(currentPath, pageId, globalConfig);
+  return _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE;
 };
 
 exports.currentPathMatchesPageId = currentPathMatchesPageId;
 
 var getCurrentPageId = function getCurrentPageId(page, globalConfig) {
-  var pagesConfig = globalConfig.pagesConfig; //logger.log("pagesConfig", pagesConfig)
-
-  var pageConfigPageIds = Object.keys(pagesConfig); //logger.log("pageConfigPageIds",pageConfigPageIds)
+  var pagesConfig = globalConfig.pagesConfig;
+  var pageConfigPageIds = Object.keys(pagesConfig);
 
   var _URL2 = new URL(page.url()),
       currentPath = _URL2.pathname;
 
   var currentPageId = pageConfigPageIds.find(function (pageId) {
     return pathMatchesPageId(currentPath, pageId, globalConfig);
-  }); //logger.log("currentPageId",currentPageId)
+  });
 
   if (!currentPageId) {
-    throw Error("Failed to get page name from current route ".concat(currentPath, ",    possible pages : ").concat(JSON.stringify(pagesConfig)));
+    throw Error("Failed to get page name from current route ".concat(currentPath, ",       possible pages: ").concat(JSON.stringify(pagesConfig)));
   }
 
   return currentPageId;

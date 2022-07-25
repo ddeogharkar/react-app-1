@@ -2,15 +2,16 @@
 
 var _cucumber = require("@cucumber/cucumber");
 
+var _browserBehavior = require("../../support/browser-behavior");
+
 var _parseEnv = require("../../env/parseEnv");
 
-var _browserBehavior = require("../../support/browser-behavior");
+var _logger = require("../../logger");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//import { logger } from "../../logger";
 (0, _cucumber.setDefaultTimeout)((0, _parseEnv.envNumber)('SCRIPT_TIMEOUT'));
 (0, _cucumber.Before)( /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(scenario) {
@@ -19,7 +20,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log("running cucumber scenarion ".concat(scenario.pickle.name));
+            _logger.logger.log("Running cucumber scenario ".concat(scenario.pickle.name));
+
             contextOptions = {
               viewport: (0, _browserBehavior.getViewPort)(),
               ignoreHTTPSErrors: true,
@@ -59,14 +61,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _this$screen = this.screen, page = _this$screen.page, browser = _this$screen.browser;
             scenarioStatus = (_scenario$result = scenario.result) === null || _scenario$result === void 0 ? void 0 : _scenario$result.status;
 
-            if (!(scenarioStatus === "FAILED")) {
+            if (!(scenarioStatus === 'FAILED')) {
               _context2.next = 8;
               break;
             }
 
             _context2.next = 5;
             return page.screenshot({
-              path: "".concat((0, _parseEnv.env)('SCREENSHOTS_PATH')).concat(scenario.pickle.name, ".png")
+              path: "".concat((0, _parseEnv.env)('SCREENSHOT_PATH')).concat(scenario.pickle.name, ".png")
             });
 
           case 5:

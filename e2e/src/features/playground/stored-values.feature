@@ -1,4 +1,5 @@
 Feature:As a user I can interact with stored values
+
   @smoke
   @regression
   Scenario:As a user I can interact and assert on stored values

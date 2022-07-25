@@ -2,11 +2,11 @@
 
 var _cucumber = require("@cucumber/cucumber");
 
-var _logger = require("../logger");
-
 var _navigationBehavior = require("../support/navigation-behavior");
 
 var _waitForBehavior = require("../support/wait-for-behavior");
+
+var _logger = require("../logger");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -30,6 +30,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _context.next = 6;
             return (0, _waitForBehavior.waitFor)(function () {
               return (0, _navigationBehavior.currentPathMatchesPageId)(page, pageId, globalConfig);
+            }, globalConfig, {
+              target: pageId,
+              type: 'page'
             });
 
           case 6:
@@ -53,11 +56,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig;
 
-            _logger.logger.log("I am direceted to the ".concat(pageId, " page"));
+            _logger.logger.log("I am directed to the ".concat(pageId, " page"));
 
             _context2.next = 4;
             return (0, _waitForBehavior.waitFor)(function () {
               return (0, _navigationBehavior.currentPathMatchesPageId)(page, pageId, globalConfig);
+            }, globalConfig, {
+              target: pageId,
+              type: 'page'
             });
 
           case 4:
@@ -90,7 +96,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _context3.next = 6;
             return (0, _waitForBehavior.waitFor)(function () {
               return (0, _navigationBehavior.currentPathMatchesPageId)(page, pageId, globalConfig);
-            }, {
+            }, globalConfig, {
+              target: pageId,
+              type: 'page',
               timeout: 30000
             });
 

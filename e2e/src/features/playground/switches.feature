@@ -7,8 +7,8 @@ Feature:As a user I can interact with switches
     And I click the "playground" button
     When I am directed to the "playground" page
     And the "switch one" switch should be checked
-    Then I uncheck "switch one" switch
+    Then I uncheck the "switch one" switch
     And the "switch one" switch should not be checked
-    And I check "switch one" switch
+    And I check the "switch one" switch
     And the "switch one" switch should be checked
     And the "switch two" should not be enabled

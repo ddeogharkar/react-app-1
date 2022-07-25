@@ -2,11 +2,11 @@
 
 var _cucumber = require("@cucumber/cucumber");
 
-var _webElementHelper = require("../support/web-element-helper");
-
 var _waitForBehavior = require("../support/wait-for-behavior");
 
 var _htmlBehavior = require("../support/html-behavior");
+
+var _webElementHelper = require("../support/web-element-helper");
 
 var _logger = require("../logger");
 
@@ -26,28 +26,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           case 0:
             _this$screen = this.screen, page = _this$screen.page, context = _this$screen.context, globalConfig = this.globalConfig;
 
-            _logger.logger.log("I fill in the ".concat(elementKey, " input on the ").concat(elementPosition, " tab|window with ").concat(inputValue));
+            _logger.logger.log("I fill in the ".concat(elementKey, " input on the ").concat(elementPosition, " window|tab with ").concat(inputValue));
 
             pageIndex = Number((_elementPosition$matc = elementPosition.match(/\d/g)) === null || _elementPosition$matc === void 0 ? void 0 : _elementPosition$matc.join('')) - 1;
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             _context2.next = 6;
             return (0, _waitForBehavior.waitFor)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var pages, result;
+              var pages, elementStable;
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
                       pages = context.pages();
                       _context.next = 3;
-                      return pages[pageIndex].waitForSelector(elementIdentifier, {
-                        state: "visible"
-                      });
+                      return (0, _waitForBehavior.waitForSelectorOnPage)(page, elementIdentifier, pages, pageIndex);
 
                     case 3:
-                      result = _context.sent;
+                      elementStable = _context.sent;
 
-                      if (!result) {
-                        _context.next = 7;
+                      if (!elementStable) {
+                        _context.next = 8;
                         break;
                       }
 
@@ -55,15 +53,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       return (0, _htmlBehavior.inputValueOnPage)(pages, pageIndex, elementIdentifier, inputValue);
 
                     case 7:
-                      return _context.abrupt("return", result);
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.PASS);
 
                     case 8:
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE);
+
+                    case 9:
                     case "end":
                       return _context.stop();
                   }
                 }
               }, _callee);
-            })));
+            })), globalConfig, {
+              target: elementKey
+            });
 
           case 6:
           case "end":

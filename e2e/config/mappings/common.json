@@ -1,5 +1,5 @@
 {
-  "header logo": "//a[@class='testing-talks-logo']",
+  "header logo": "[data-id='header logo']",
   "name": "[data-id='name']",
   "gender": "[data-id='gender']",
   "phone": "[data-id='phone']",

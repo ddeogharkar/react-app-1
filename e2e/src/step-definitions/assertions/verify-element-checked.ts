@@ -1,27 +1,46 @@
-import { Then } from "@cucumber/cucumber";
-//import { expect } from "@playwright/test";
-import { ScenarioWorld } from "../setup/world";
-import { ElementKey } from "../../env/global"
-import { getElementLocator } from "../../support/web-element-helper"
-import { waitFor } from "../../support/wait-for-behavior"
+import { Then } from '@cucumber/cucumber'
+import {
+    waitFor,
+    waitForResult,
+    waitForSelector
+} from '../../support/wait-for-behavior'
+import { elementChecked } from "../../support/html-behavior"
+import { ScenarioWorld } from '../setup/world'
+import { getElementLocator } from '../../support/web-element-helper'
+import { ElementKey } from '../../env/global'
 import { logger } from "../../logger";
 
 Then(
-  /^the "([^"]*)" (?:checkbox|radio button|switch) should( not)? be checked$/,
-  async function (this: ScenarioWorld, elementKey: ElementKey, negate: boolean) {
-    const {
-      screen: { page },
-      globalConfig,
-    } = this
+    /^the "([^"]*)" (?:check box|radio button|switch) should( not)? be checked$/,
+    async function (this: ScenarioWorld, elementKey: ElementKey, negate: boolean) {
+        const {
+            screen: { page },
+            globalConfig,
+        } = this;
 
-    logger.log(`the ${elementKey} checkbox|radio button should ${negate ? `not` : ``} be checked`);
+        logger.log(`the ${elementKey} check box|radio button should ${negate ? 'not ' : ''}be checked`)
 
-    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+        const elementIdentifier = getElementLocator(page, elementKey, globalConfig)
 
-    await waitFor(async () => {
+        await waitFor(async () => {
+            const elementStable = await waitForSelector(page, elementIdentifier)
 
-      const isElementChecked = await page.isChecked(elementIdentifier)
-
-      return isElementChecked === !negate;
-    })
-  })
+            if (elementStable) {
+                const isElementChecked = await elementChecked(page, elementIdentifier)
+                if (isElementChecked === !negate) {
+                    return waitForResult.PASS
+                } else {
+                    return waitForResult.FAIL
+                }
+            } else {
+                return waitForResult.ELEMENT_NOT_AVAILABLE
+            }
+        },
+            globalConfig,
+            {
+                target: elementKey,
+                failureMessage: `🧨 Expected ${elementKey} to ${negate ? 'not ' : ''}be checked 🧨`
+            }
+        )
+    }
+)

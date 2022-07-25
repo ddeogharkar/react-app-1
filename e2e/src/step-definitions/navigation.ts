@@ -1,52 +1,67 @@
-import { Given, setDefaultTimeout } from "@cucumber/cucumber";
-import { PageId } from "../env/global";
+import { Given } from '@cucumber/cucumber'
+import {
+    currentPathMatchesPageId,
+    navigateToPage,
+    reloadPage,
+} from '../support/navigation-behavior';
+import { ScenarioWorld } from './setup/world';
+import { waitFor } from '../support/wait-for-behavior';
+import { PageId } from '../env/global';
 import { logger } from "../logger";
-import { currentPathMatchesPageId, navigateToPage, reloadPage } from "../support/navigation-behavior";
-import { waitFor } from "../support/wait-for-behavior";
-import { ScenarioWorld } from "./setup/world";
 
+Given(
+    /^I am on the "([^"]*)" page$/,
+    async function (this: ScenarioWorld, pageId: PageId) {
+        const {
+            screen: { page },
+            globalConfig,
+        } = this;
 
-Given(/^I am on the "([^"]*)" page$/, async function (this: ScenarioWorld, pageId: PageId) {
-  const {
-    screen: { page },
-    globalConfig,
-  } = this
-  logger.log(`I am on the ${pageId} page`);
+        logger.log(`I am on the ${pageId} page`);
 
-  await navigateToPage(page, pageId, globalConfig)
-  //await page.goto("http://localhost:3000/");
+        await navigateToPage(page, pageId, globalConfig);
 
-  //await global.page.timeout(30000);
+        await waitFor(() => currentPathMatchesPageId(page, pageId, globalConfig), globalConfig, {
+            target: pageId,
+            type: 'page'
+        });
 
-  await waitFor(() => currentPathMatchesPageId(page, pageId, globalConfig));
-});
+    }
+)
 
-Given(/^I am directed to the "([^"]*)" page$/, async function (this: ScenarioWorld, pageId: PageId) {
-  const {
-    screen: { page },
-    globalConfig,
-  } = this
+Given(
+    /^I am directed to the "([^"]*)" page$/,
+    async function (this: ScenarioWorld, pageId: PageId) {
+        const {
+            screen: { page },
+            globalConfig,
+        } = this;
 
-  logger.log(`I am direceted to the ${pageId} page`);
+        logger.log(`I am directed to the ${pageId} page`);
 
-  await waitFor(() => currentPathMatchesPageId(page, pageId, globalConfig));
-})
+        await waitFor(() => currentPathMatchesPageId(page, pageId, globalConfig), globalConfig, {
+            target: pageId,
+            type: 'page'
+        });
+    }
+);
 
-Given(/^I refresh the "([^"]*)" page$/, async function (
-  this: ScenarioWorld, pageId: PageId
-) {
-  const {
-    screen: { page },
-    globalConfig
-  } = this
+Given(
+    /^I refresh the "([^"]*)" page$/,
+    async function (this: ScenarioWorld, pageId: PageId) {
+        const {
+            screen: { page },
+            globalConfig,
+        } = this;
 
-  logger.log(`I refresh the ${pageId} page`)
+        logger.log(`I refresh the ${pageId} page`)
 
+        await reloadPage(page)
 
-  await reloadPage(page)
-
-  await waitFor(() => currentPathMatchesPageId(page, pageId, globalConfig), {
-    timeout: 30000
-  })
-
-})
+        await waitFor(() => currentPathMatchesPageId(page, pageId, globalConfig), globalConfig, {
+            target: pageId,
+            type: 'page',
+            timeout: 30000,
+        })
+    }
+)

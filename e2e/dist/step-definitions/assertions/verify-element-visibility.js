@@ -2,6 +2,8 @@
 
 var _cucumber = require("@cucumber/cucumber");
 
+var _htmlBehavior = require("../../support/html-behavior");
+
 var _webElementHelper = require("../../support/web-element-helper");
 
 var _waitForBehavior = require("../../support/wait-for-behavior");
@@ -32,20 +34,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   switch (_context.prev = _context.next) {
                     case 0:
                       _context.next = 2;
-                      return page.$(elementIdentifier);
+                      return (0, _htmlBehavior.getElement)(page, elementIdentifier);
 
                     case 2:
                       _context.t0 = _context.sent;
                       isElementVisible = _context.t0 != null;
-                      return _context.abrupt("return", isElementVisible === !negate);
 
-                    case 5:
+                      if (!(isElementVisible === !negate)) {
+                        _context.next = 8;
+                        break;
+                      }
+
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.PASS);
+
+                    case 8:
+                      return _context.abrupt("return", _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE);
+
+                    case 9:
                     case "end":
                       return _context.stop();
                   }
                 }
               }, _callee);
-            })));
+            })), globalConfig, {
+              target: elementKey,
+              failureMessage: "\uD83E\uDDE8 Expected ".concat(elementKey, " to ").concat(negate ? 'not ' : '', "be displayed \uD83E\uDDE8")
+            });
 
           case 5:
           case "end":
@@ -70,7 +84,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig;
 
-            _logger.logger.log("the ".concat(elementPosition, " ").concat(elementKey, " should ").concat(negate ? "not" : "", " be displayed"));
+            _logger.logger.log("the ".concat(elementPosition, " ").concat(elementKey, " should ").concat(negate ? 'not' : '', "be displayed"));
 
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             index = Number((_elementPosition$matc = elementPosition.match(/\d/g)) === null || _elementPosition$matc === void 0 ? void 0 : _elementPosition$matc.join('')) - 1;
@@ -82,20 +96,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   switch (_context3.prev = _context3.next) {
                     case 0:
                       _context3.next = 2;
-                      return page.$("".concat(elementIdentifier, ">>nth = ").concat(index));
+                      return (0, _htmlBehavior.getElementAtIndex)(page, elementIdentifier, index);
 
                     case 2:
                       _context3.t0 = _context3.sent;
                       isElementVisible = _context3.t0 != null;
-                      return _context3.abrupt("return", isElementVisible === !negate);
 
-                    case 5:
+                      if (!(isElementVisible === !negate)) {
+                        _context3.next = 8;
+                        break;
+                      }
+
+                      return _context3.abrupt("return", _waitForBehavior.waitForResult.PASS);
+
+                    case 8:
+                      return _context3.abrupt("return", _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE);
+
+                    case 9:
                     case "end":
                       return _context3.stop();
                   }
                 }
               }, _callee3);
-            })));
+            })), globalConfig, {
+              target: elementKey,
+              failureMessage: "\uD83E\uDDE8 Expected ".concat(elementPosition, " ").concat(elementKey, " to ").concat(negate ? 'not ' : '', "be displayed \uD83E\uDDE8")
+            });
 
           case 6:
           case "end":
@@ -118,7 +144,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           case 0:
             page = this.screen.page, globalConfig = this.globalConfig;
 
-            _logger.logger.log("I should ".concat(negate ? "not" : "", " see ").concat(count, " ").concat(elementKey, " displayed"));
+            _logger.logger.log("I should ".concat(negate ? 'not ' : '', "see ").concat(count, " ").concat(elementKey, " displayed"));
 
             elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
             _context6.next = 5;
@@ -129,19 +155,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   switch (_context5.prev = _context5.next) {
                     case 0:
                       _context5.next = 2;
-                      return page.$$(elementIdentifier);
+                      return (0, _htmlBehavior.getElements)(page, elementIdentifier);
 
                     case 2:
                       element = _context5.sent;
-                      return _context5.abrupt("return", Number(count) === element.length === !negate);
 
-                    case 4:
+                      if (!(Number(count) === element.length === !negate)) {
+                        _context5.next = 7;
+                        break;
+                      }
+
+                      return _context5.abrupt("return", _waitForBehavior.waitForResult.PASS);
+
+                    case 7:
+                      return _context5.abrupt("return", _waitForBehavior.waitForResult.ELEMENT_NOT_AVAILABLE);
+
+                    case 8:
                     case "end":
                       return _context5.stop();
                   }
                 }
               }, _callee5);
-            })));
+            })), globalConfig, {
+              target: elementKey,
+              failureMessage: "\uD83E\uDDE8 Expected ".concat(count, " ").concat(elementKey, " to ").concat(negate ? 'not ' : '', "be displayed \uD83E\uDDE8")
+            });
 
           case 5:
           case "end":

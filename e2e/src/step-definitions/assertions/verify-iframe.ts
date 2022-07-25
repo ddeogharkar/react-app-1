@@ -1,83 +1,135 @@
-import { Then } from "@cucumber/cucumber";
-import { ScenarioWorld } from "../setup/world";
-import { ElementKey } from "../../env/global"
-import { getElementLocator } from "../../support/web-element-helper"
-import { waitFor } from "../../support/wait-for-behavior"
-import { getIframeElement } from "../../support/html-behavior";
-import { logger } from "../../logger";
+import { Then } from '@cucumber/cucumber'
+import {
+    waitFor, waitForResult,
+    waitForSelectorInIframe
+} from '../../support/wait-for-behavior'
+import { ScenarioWorld } from '../setup/world'
+import { getElementLocator } from '../../support/web-element-helper'
+import { ElementKey } from '../../env/global'
+import {
+    getElementWithinIframe,
+    getIframeElement, getTextWithinIframeElement
+} from '../../support/html-behavior'
+import {logger} from "../../logger";
 
-Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? be displayed$/, async function (
-  this: ScenarioWorld, elementKey: ElementKey, iframeName: string, negate: boolean) {
-  const {
-    screen: { page },
-    globalConfig,
-  } = this
+Then(
+    /^the "([^"]*)" on the "([^"]*)" iframe should( not)? be displayed$/,
+    async function(this: ScenarioWorld, elementKey: ElementKey, iframeKey: string, negate: boolean) {
+        const {
+            screen: { page },
+            globalConfig,
+        } = this;
 
-  logger.log(`the ${elementKey} on the ${iframeName} iframe should ${negate ? `not` : ``} be displayed`);
+        logger.log(`the ${elementKey} on the ${iframeKey} iframe should ${negate?'not ':''}be displayed`);
 
-  const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
-  const iframeIdentifier = getElementLocator(page, iframeName, globalConfig);
+        const elementIdentifier = getElementLocator(page, elementKey, globalConfig)
+        const iframeIdentifier = getElementLocator(page, iframeKey, globalConfig)
 
+        await waitFor(async () => {
+                const elementIframe = await getIframeElement(page, iframeIdentifier)
 
-  await waitFor(async () => {
-    const elementIframe = await getIframeElement(page, iframeIdentifier);
-    const isElementVisible = (await elementIframe?.$(elementIdentifier)) != null;
-    return isElementVisible === !negate
-  })
+                if (elementIframe) {
+                    const isElementVisible = await getElementWithinIframe(elementIframe, elementIdentifier) != null;
+                    if (isElementVisible === !negate) {
+                        return {result: waitForResult.PASS}
+                    } else {
+                        return {result: waitForResult.FAIL, replace: elementKey}
+                    }
+                } else {
+                    return {result: waitForResult.ELEMENT_NOT_AVAILABLE, replace: iframeKey}
+                }
+            },
+            globalConfig,
+            {
+                target: elementKey,
+                failureMessage: `🧨 Expected ${elementKey} to ${negate ? 'not ' : ''}be displayed 🧨`
+            }
+        )
+    }
+)
 
-})
+Then(
+    /^the "([^"]*)" on the "([^"]*)" iframe should( not)? contain the text "(.*)"$/,
+    async function(this: ScenarioWorld, elementKey: ElementKey, iframeKey: string, negate: boolean, expectedElementText: string) {
+        const {
+            screen: { page },
+            globalConfig,
+        } = this;
 
-Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? contain the text "(.*)"$/,
-  async function (
-    this: ScenarioWorld, elementKey: ElementKey, iframeName: string, negate: boolean, expectedElementValue: string
-  ) {
-    const {
-      screen: { page },
-      globalConfig,
-    } = this
+        logger.log(`the ${elementKey} on the ${iframeKey} should ${negate?'not ':''}contain the text ${expectedElementText}`)
 
-    logger.log("expectedElementValue", expectedElementValue);
-    logger.log(
-      `the ${elementKey} on the ${iframeName} iframe should ${negate ? `not` : ``} contain the text ${expectedElementValue}`
-    );
+        const elementIdentifier = getElementLocator(page, elementKey, globalConfig)
+        const iframeIdentifier = getElementLocator(page, iframeKey, globalConfig)
 
-    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
-    const iframeIdentifier = getElementLocator(page, iframeName, globalConfig);
+        await waitFor(async () => {
+                const elementIframe = await getIframeElement(page, iframeIdentifier)
 
+                if (elementIframe) {
 
-    await waitFor(async () => {
-      const elementIframe = await getIframeElement(page, iframeIdentifier);
-      const elementText = await elementIframe?.textContent(elementIdentifier);
-      logger.log("elementText", elementText)
-      return elementText?.includes(expectedElementValue) === !negate;
-    })
+                    const elementStable = await waitForSelectorInIframe(elementIframe, elementIdentifier)
 
-  })
+                    if (elementStable) {
+                        const elementText = await getTextWithinIframeElement(elementIframe, elementIdentifier)
+                        if (elementText?.includes(expectedElementText) === !negate) {
+                            return {result: waitForResult.PASS}
+                        } else {
+                            return {result: waitForResult.FAIL, replace: elementKey}
+                        }
+                    } else {
+                        return {result: waitForResult.ELEMENT_NOT_AVAILABLE, replace: elementKey}
+                    }
 
-Then(/^the "([^"]*)" on the "([^"]*)" iframe should( not)? equal the text "(.*)"$/,
-  async function (
-    this: ScenarioWorld, elementKey: ElementKey, iframeName: string, negate: boolean, expectedElementValue: string
-  ) {
-    const {
-      screen: { page },
-      globalConfig,
-    } = this
+                } else {
+                    return {result: waitForResult.ELEMENT_NOT_AVAILABLE, replace: iframeKey}
+                }
 
-    logger.log("expectedElementValue", expectedElementValue);
-    logger.log(
-      `the ${elementKey} on the ${iframeName} iframe should ${negate ? `not` : ``} equal the text ${expectedElementValue}`
-    );
+            },
+            globalConfig,
+            {
+                target: elementKey,
+                failureMessage: `🧨 Expected ${elementKey} to ${negate ? 'not ' : ''}contain the text ${expectedElementText} 🧨`
+            }
+        )
+    }
+)
 
-    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
-    const iframeIdentifier = getElementLocator(page, iframeName, globalConfig);
+Then(
+    /^the "([^"]*)" on the "([^"]*)" iframe should( not)? equal the text "(.*)"$/,
+    async function(this: ScenarioWorld, elementKey: ElementKey, iframeKey: string, negate: boolean, expectedElementText: string) {
+        const {
+            screen: { page },
+            globalConfig,
+        } = this;
 
+        logger.log(`the ${elementKey} on the ${iframeKey} should ${negate?'not ':''}equal the text ${expectedElementText}`)
 
-    await waitFor(async () => {
-      const elementIframe = await getIframeElement(page, iframeIdentifier);
-      const elementText = await elementIframe?.textContent(elementIdentifier);
-      logger.log("elementText", elementText)
-      return (elementText === expectedElementValue) === !negate;
-    })
+        const elementIdentifier = getElementLocator(page, elementKey, globalConfig)
+        const iframeIdentifier = getElementLocator(page, iframeKey, globalConfig)
 
-  })
+        await waitFor(async () =>  {
+                const elementIframe = await getIframeElement(page, iframeIdentifier)
 
+                if (elementIframe) {
+                    const elementStable = await waitForSelectorInIframe(elementIframe, elementIdentifier)
+
+                    if (elementStable) {
+                        const elementText = await getTextWithinIframeElement(elementIframe, elementIdentifier)
+                        if ((elementText === expectedElementText) === !negate) {
+                            return {result: waitForResult.PASS}
+                        } else {
+                            return {result: waitForResult.FAIL, replace: elementKey}
+                        }
+                    } else {
+                        return {result: waitForResult.ELEMENT_NOT_AVAILABLE, replace: elementKey}
+                    }
+                } else {
+                    return {result: waitForResult.ELEMENT_NOT_AVAILABLE, replace: iframeKey}
+                }
+            },
+            globalConfig, {
+                target: elementKey,
+                failureMessage: `🧨 Expected ${elementKey} to ${negate ? 'not ' : ''}equal the text ${expectedElementText} 🧨`
+            }
+        )
+    }
+)

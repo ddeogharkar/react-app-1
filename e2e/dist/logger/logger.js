@@ -15,8 +15,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var DEBUG = 'debug';
 var LOG = 'log';
+var ERROR = 'error';
 var OFF = 'off';
-var LOG_LEVELS = [DEBUG, LOG, OFF];
+var LOG_LEVELS = [DEBUG, LOG, ERROR, OFF];
 
 var logFuncAtLevels = function logFuncAtLevels(logLevels) {
   var logFunction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : console;
